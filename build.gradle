@@ -1,0 +1,124 @@
+import java.time.Duration
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.3.RELEASE'
+        dockerComposeGradlePluginVersion = '0.4.5'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.avast.gradle:docker-compose-gradle-plugin:${dockerComposeGradlePluginVersion}"
+        classpath "se.transmode.gradle:gradle-docker:1.2"
+        classpath "org.liquibase:liquibase-gradle-plugin:1.2.4"
+        classpath "org.postgresql:postgresql:9.4.1212"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'docker-compose'
+apply plugin: 'docker'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.liquibase.gradle'
+
+idea {
+    module {
+        testSourceDirs += file('src/integration-test/java')
+        testSourceDirs += file('src/integration-test/resources')
+    }
+}
+
+jar {
+    baseName = 'psvzwemmen'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
+}
+
+repositories {
+	mavenCentral()
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDirs = ['src/integration-test/java']
+        }
+
+        resources {
+            srcDirs = ['src/integration-test/resources']
+        }
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+	testClassesDir = sourceSets.integrationTest.output.classesDir
+	classpath = sourceSets.integrationTest.runtimeClasspath
+	mustRunAfter test
+}
+
+dockerCompose {
+    useComposeFiles = ['./src/integration-test/resources/docker-compose-it.yml']
+    waitForTcpPortsTimeout = Duration.ofMinutes(1)
+}
+
+dockerCompose.isRequiredBy(integrationTest)
+check.dependsOn integrationTest
+
+task buildDocker(type: Docker) {
+    baseImage = 'java:8'
+    tag = 'afernandez/psv-zwemmen-backend'
+
+    addFile {
+        from jar
+        rename {'app.jar'}
+    }
+
+    addFile('src/main/resources/docker/wrapper.sh', 'wrapper.sh')
+
+    runCommand('bash -c "chmod +x /wrapper.sh"')
+    runCommand('bash -c "touch /app.jar"')
+
+    entryPoint(['/bin/bash', '/wrapper.sh'])
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/database/changelog-init.xml'
+            url 'jdbc:postgresql://localhost/psv-zwemmen'
+            username 'postgres'
+            password '614087'
+            defaultSchemaName 'public'
+        }
+        runList = "main"
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile('io.jsonwebtoken:jjwt:0.7.0')
+    compile('org.liquibase:liquibase-core')
+    compile('org.hibernate:hibernate-java8')
+    compile('org.postgresql:postgresql:9.4.1212')
+    compile('org.apache.commons:commons-lang3:3.5')
+    compile('org.apache.commons:commons-collections4:4.1')
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.8.8')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+}

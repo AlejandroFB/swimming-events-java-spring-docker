@@ -1,0 +1,209 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="afernandez (generated)" id="sq_coach_generation">
+        <createSequence sequenceName="sq_coach"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="sq_competition_generation">
+        <createSequence sequenceName="sq_competition"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="sq_entry_time_generation">
+        <createSequence sequenceName="sq_entry_time"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="sq_meet_generation">
+        <createSequence sequenceName="sq_meet"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="sq_swimmer_generation">
+        <createSequence sequenceName="sq_swimmer"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="table_coach_generation">
+        <createTable tableName="coach">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="club" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="encrypted_password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_valid_after" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="table_competition_generation">
+        <createTable tableName="competition">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="course" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="date"/>
+            <column name="number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="place" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="table_meet_generation">
+        <createTable tableName="meet">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age_group" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="distance" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stroke" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competition_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="table_result_generation">
+        <createTable tableName="result">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="VARCHAR(255)"/>
+            <column name="meet_id" type="INT"/>
+            <column name="swimmer_id" type="INT"/>
+            <column name="approved_by_coach" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="table_swimmer_generation">
+        <createTable tableName="swimmer">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="club" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="encrypted_password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="level" type="VARCHAR(255)"/>
+            <column name="number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birthday" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mobile_phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_valid_after" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="afernandez (generated)" id="meet_pkey_generation">
+        <addPrimaryKey columnNames="id" constraintName="meet_pkey" tableName="meet"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="competition_pkey_generation">
+        <addPrimaryKey columnNames="id" constraintName="competition_pkey" tableName="competition"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="coach_pkey_generation">
+        <addPrimaryKey columnNames="id" constraintName="coach_pkey" tableName="coach"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="result_pkey_generation">
+        <addPrimaryKey columnNames="id" constraintName="result_pkey" tableName="result"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="swimmer_pkey_generation">
+        <addPrimaryKey columnNames="id" constraintName="swimmer_pkey" tableName="swimmer"/>
+    </changeSet>
+
+    <changeSet author="afernandez (generated)" id="result_unique_generation">
+        <addUniqueConstraint columnNames="swimmer_id, meet_id" constraintName="result_unique" tableName="result"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="swimmer_unique_number_generation">
+        <addUniqueConstraint columnNames="number" constraintName="swimmer_unique_number" tableName="swimmer"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="coach_unique_email_generation">
+        <addUniqueConstraint columnNames="email_address" constraintName="coach_unique_email" tableName="coach"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="swimmer_unique_user_name_generation">
+        <addUniqueConstraint columnNames="user_name" constraintName="swimmer_unique_user_name" tableName="swimmer"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="competition_unique_number_generation">
+        <addUniqueConstraint columnNames="number" constraintName="competition_unique_number" tableName="competition"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="swimmer_unique_registration_id_generation">
+        <addUniqueConstraint columnNames="registration_id" constraintName="swimmer_unique_registration_id" tableName="swimmer"/>
+    </changeSet>
+
+    <changeSet author="afernandez (generated)" id="meet_fk_competition_generation">
+        <addForeignKeyConstraint baseColumnNames="competition_id" baseTableName="meet" constraintName="meet_fk_competition" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="competition"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="result_fk_swimmer_generation">
+        <addForeignKeyConstraint baseColumnNames="swimmer_id" baseTableName="result" constraintName="result_fk_swimmer" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="swimmer"/>
+    </changeSet>
+    <changeSet author="afernandez (generated)" id="result_fk_meet_generation">
+        <addForeignKeyConstraint baseColumnNames="meet_id" baseTableName="result" constraintName="result_fk_meet" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="meet"/>
+    </changeSet>
+</databaseChangeLog>
